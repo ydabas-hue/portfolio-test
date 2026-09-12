@@ -1,6 +1,6 @@
 ---
 import { Image } from 'astro:assets';
-import { featuredPosts, profilesBy, thumb } from '../lib/social.js';
+import { mostEngagedPosts, profilesBy, thumb } from '../lib/social.js';
 import { compactCount } from '../lib/format.js';
 
 const accounts = profilesBy('instagram');
@@ -8,10 +8,10 @@ const accounts = profilesBy('instagram');
 <div class="stands">
   <header>
     <p class="kicker">The Stands</p>
-    <h2>On Instagram</h2>
+    <h2>Pulse of the Crowd</h2>
   </header>
   <ul class="grid" role="list">
-    {featuredPosts.map((p) => (
+    {mostEngagedPosts.map((p) => (
       <li>
         <a
           class="post"

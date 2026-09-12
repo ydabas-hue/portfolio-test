@@ -9,6 +9,7 @@ import Scoreboard from '../components/Scoreboard.astro';
 import Stands from '../components/Stands.astro';
 import Pavilion from '../components/Pavilion.astro';
 import Boundary from '../components/Boundary.astro';
+import Marquee from '../components/Marquee.astro';
 import { still } from '../lib/keyframes.js';
 import { site } from '../data/site.js';
 import { featuredVideos } from '../lib/social.js';
@@ -19,6 +20,26 @@ const og = await getImage({ src: still(0), width: 1200, height: 630, fit: 'cover
 const imageUrl = new URL(og.src, Astro.site).href;
 const jsonLd = buildJsonLd({ site, videos: featuredVideos, pageUrl, imageUrl });
 const title = `${site.name} — Cricket Content Creator`;
+
+const marqueeBelt1 = [
+  '44.2K YOUTUBE SUBS',
+  'SPIN & SWING',
+  'DEATH OVERS TACTICS',
+  'SEAM & SWING SECRETS',
+  'BOWLING VARIATIONS',
+  'MATCHDAY ANALYSIS',
+  'AUTHENTIC CRICKET INTEL',
+];
+
+const marqueeBelt2 = [
+  'CRICKET WITH SOUL',
+  'VIRAL INSTAGRAM REELS',
+  'ORGANIC FAN ENGAGEMENT',
+  'MILLIONS OF IMPRESSIONS',
+  'GRASSROOTS TO INTERNATIONAL',
+  "LET'S BUILD SOMETHING ICONIC",
+  'BRAND PARTNERSHIPS',
+];
 ---
 <Base title={title} description={site.tagline}>
   <Fragment slot="head">
@@ -35,11 +56,13 @@ const title = `${site.name} — Cricket Content Creator`;
   </Fragment>
   <ScrubStage />
   <main>
-    <Zone id="tunnel" label="Intro" still={still(0)} eager><Hero /></Zone>
+    <Zone id="tunnel" label="Intro" still={still(0)} video="/videos/stadium-intro.mp4" eager><Hero /></Zone>
     <Zone id="pitch" label="The Pitch" still={still(1)}><Pitch /></Zone>
     <Zone id="scoreboard" label="Scoreboard" still={still(2)}><Scoreboard /></Zone>
     <Zone id="stands" label="The Stands" still={still(3)}><Stands /></Zone>
+    <Marquee items={marqueeBelt1} theme="maroon" speed={28} />
     <Zone id="pavilion" label="Pavilion" still={still(4)}><Pavilion /></Zone>
+    <Marquee items={marqueeBelt2} theme="maroon" speed={32} reverse />
     <Zone id="boundary" label="Boundary Rope" still={still(5)}><Boundary /></Zone>
   </main>
 </Base>

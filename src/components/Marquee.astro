@@ -1,0 +1,109 @@
+---
+interface Props {
+  items: string[];
+  reverse?: boolean;
+  speed?: number; // duration in seconds
+  theme?: 'maroon' | 'subtle';
+}
+
+const { items = [], reverse = false, speed = 25, theme = 'maroon' } = Astro.props;
+// Duplicate items to ensure seamless infinite looping
+const displayItems = [...items, ...items, ...items];
+---
+
+<div class={`marquee-container ${theme}`} aria-hidden="true">
+  <div class={`marquee-track ${reverse ? 'reverse' : ''}`} style={`--speed: ${speed}s;`}>
+    {displayItems.map((item) => (
+      <span class="marquee-item">
+        <span class="item-text">{item}</span>
+        <span class="separator" aria-hidden="true">✦</span>
+      </span>
+    ))}
+  </div>
+</div>
+
+<style>
+  .marquee-container {
+    width: 100vw;
+    margin-left: calc(50% - 50vw);
+    margin-right: calc(50% - 50vw);
+    overflow: hidden;
+    white-space: nowrap;
+    user-select: none;
+    padding: var(--space-xs) 0;
+    position: relative;
+    z-index: 5;
+    box-sizing: border-box;
+  }
+
+  .marquee-container.maroon {
+    background: linear-gradient(90deg, var(--maroon-700) 0%, var(--maroon-600) 50%, var(--maroon-700) 100%);
+    border-top: 1px solid color-mix(in oklab, var(--maroon-400) 40%, transparent);
+    border-bottom: 1px solid color-mix(in oklab, var(--maroon-400) 40%, transparent);
+    color: var(--flood-50);
+  }
+
+  .marquee-container.subtle {
+    background: color-mix(in oklab, var(--color-surface) 95%, black);
+    border-top: 1px solid var(--color-line);
+    border-bottom: 1px solid var(--color-line);
+    color: var(--chalk-100);
+  }
+
+  .marquee-track {
+    display: inline-flex;
+    align-items: center;
+    width: max-content;
+    animation: scroll-left var(--speed, 25s) linear infinite;
+    will-change: transform;
+  }
+
+  .marquee-track.reverse {
+    animation-name: scroll-right;
+  }
+
+  .marquee-item {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-s);
+    padding: 0 var(--space-s);
+  }
+
+  .item-text {
+    font-family: var(--font-display);
+    font-size: var(--step-0);
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .separator {
+    color: var(--maroon-light);
+    font-size: 0.75rem;
+    opacity: 0.8;
+  }
+
+  @keyframes scroll-left {
+    from {
+      transform: translate3d(0, 0, 0);
+    }
+    to {
+      transform: translate3d(-33.333%, 0, 0);
+    }
+  }
+
+  @keyframes scroll-right {
+    from {
+      transform: translate3d(-33.333%, 0, 0);
+    }
+    to {
+      transform: translate3d(0, 0, 0);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .marquee-track {
+      animation-duration: 120s;
+    }
+  }
+</style>

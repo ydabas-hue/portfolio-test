@@ -8,6 +8,7 @@
 html {
   color-scheme: dark;
   -webkit-text-size-adjust: 100%;
+  overflow-x: hidden;
 }
 body {
   margin: 0;
@@ -16,6 +17,8 @@ body {
   font-family: var(--font-body);
   font-size: var(--step-0);
   line-height: 1.6;
+  overflow-x: hidden;
+  width: 100%;
 }
 h1,
 h2,

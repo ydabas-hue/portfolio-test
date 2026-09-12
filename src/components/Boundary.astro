@@ -1,30 +1,57 @@
 ---
 import { site } from '../data/site.js';
 
-const handle = (url) => url.split('/').filter(Boolean).pop().replace('@', '');
 const socials = [
-  ...site.profiles.instagram.map((url) => ({ url, label: `Instagram @${handle(url)}` })),
-  ...site.profiles.youtube.map((url) => ({ url, label: `YouTube @${handle(url)}` })),
-  { url: site.profiles.linkedin, label: 'LinkedIn' },
+  { platform: 'linkedin', url: site.profiles.linkedin, label: 'LinkedIn' },
+  ...site.profiles.instagram.map((url) => ({
+    platform: 'instagram',
+    url,
+    label: `Instagram @${url.split('/').filter(Boolean).pop().replace('@', '')}`,
+  })),
+  ...site.profiles.youtube.map((url) => ({
+    platform: 'youtube',
+    url,
+    label: `YouTube @${url.split('/').filter(Boolean).pop().replace('@', '')}`,
+  })),
 ];
 ---
 <div class="boundary">
   <header>
     <p class="kicker">Boundary Rope</p>
-    <h2>Book {site.name.split(' ')[0]}</h2>
+    <h2>Let's Build Something Iconic</h2>
   </header>
-  <p class="lede">Brand collaborations and sponsorships: message directly and hear back from {site.name.split(' ')[0]} himself.</p>
+  <p class="lede">Brand collaborations, creator matchday coverage, and sponsored breakdowns: message directly to collaborate with {site.name.split(' ')[0]}.</p>
   <div class="ctas">
-    <a class="cta primary" href="/go/whatsapp">WhatsApp</a>
-    <a class="cta" href="/go/email">Email</a>
+    <a class="cta primary" href="/go/email">Send Email</a>
   </div>
-  <p class="plain">Email: <span class="email">{site.email}</span></p>
+  <p class="plain">Direct email: <a class="email" href={`mailto:${site.email}`}>{site.email}</a></p>
   <footer class="footer">
-    <ul class="socials" role="list">
-      {socials.map((s) => (
-        <li><a href={s.url} target="_blank" rel="noopener">{s.label}</a></li>
-      ))}
-    </ul>
+    <div class="social-block">
+      <span class="connect-label">Connect:</span>
+      <ul class="socials" role="list">
+        {socials.map((s) => (
+          <li>
+            <a class="social-icon-btn" href={s.url} target="_blank" rel="noopener" aria-label={s.label} title={s.label}>
+              {s.platform === 'linkedin' && (
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                  <path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.46 10.9v8.37H9.2V10.9H6.46M7.83 6.2a1.66 1.66 0 0 0-1.66 1.66c0 .92.74 1.66 1.66 1.66.92 0 1.66-.74 1.66-1.66 0-.92-.74-1.66-1.66-1.66Z"/>
+                </svg>
+              )}
+              {s.platform === 'instagram' && (
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                  <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                </svg>
+              )}
+              {s.platform === 'youtube' && (
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                  <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                </svg>
+              )}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
     <p class="small">© {new Date().getFullYear()} {site.name}</p>
   </footer>
 </div>
@@ -36,54 +63,97 @@ const socials = [
   }
   .lede {
     margin: 0;
-    max-width: 40ch;
-    font-size: var(--step-1);
+    max-width: 44ch;
+    font-size: var(--step-0);
+    line-height: 1.5;
   }
   .ctas {
     display: flex;
     flex-wrap: wrap;
     gap: var(--space-s);
+    margin-top: var(--space-xs);
   }
   .cta {
-    min-width: 11rem;
-    padding: var(--space-s) var(--space-l);
-    border: 2px solid var(--color-text);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.75rem 1.75rem;
+    border: 1px solid var(--maroon-400);
+    border-radius: 4px;
     font-family: var(--font-display);
-    font-size: var(--step-2);
-    font-weight: 800;
-    text-align: center;
+    font-size: var(--step-0);
+    font-weight: 700;
+    letter-spacing: 0.08em;
     text-decoration: none;
     text-transform: uppercase;
-    transition: transform var(--dur-fast) var(--ease-out);
-  }
-  .cta:hover {
-    transform: translateY(-2px);
+    transition: all var(--dur-fast) var(--ease-out);
+    cursor: pointer;
   }
   .primary {
-    border-color: var(--color-accent);
-    background: var(--color-accent);
+    background: var(--maroon-600);
+    color: var(--flood-50);
+  }
+  .primary:hover {
+    background: var(--maroon-500);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px color-mix(in oklab, var(--maroon-600) 50%, transparent);
   }
   .plain {
     margin: 0;
+    font-size: var(--step--1);
     color: var(--color-muted);
   }
   .email {
-    user-select: all;
+    color: var(--flood-50);
+    text-decoration: underline;
+    text-underline-offset: 3px;
   }
   .footer {
     display: grid;
     gap: var(--space-s);
-    margin-top: var(--space-xl);
+    margin-top: var(--space-l);
     padding-top: var(--space-m);
     border-top: 1px solid var(--color-line);
+  }
+  .social-block {
+    display: flex;
+    align-items: center;
+    gap: var(--space-s);
+  }
+  .connect-label {
+    font-size: var(--step--1);
+    color: var(--color-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
   }
   .socials {
     display: flex;
     flex-wrap: wrap;
-    gap: var(--space-s) var(--space-m);
+    align-items: center;
+    gap: var(--space-s);
     margin: 0;
     padding: 0;
     list-style: none;
+  }
+  .social-icon-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    background: color-mix(in oklab, var(--color-surface) 90%, transparent);
+    border: 1px solid var(--color-line);
+    color: var(--color-text);
+    transition: all var(--dur-fast) var(--ease-out);
+    text-decoration: none;
+  }
+  .social-icon-btn:hover {
+    background: var(--maroon-600);
+    border-color: var(--maroon-400);
+    color: var(--flood-50);
+    transform: translateY(-2px);
+    box-shadow: 0 2px 10px color-mix(in oklab, var(--maroon-500) 40%, transparent);
   }
   .small {
     margin: 0;

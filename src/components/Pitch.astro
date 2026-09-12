@@ -1,15 +1,15 @@
 ---
 import { Image } from 'astro:assets';
-import { featuredVideos, thumb } from '../lib/social.js';
+import { mostViewedVideos, thumb } from '../lib/social.js';
 import { compactCount, longDate } from '../lib/format.js';
 ---
 <div class="pitch">
   <header>
     <p class="kicker">The Pitch</p>
-    <h2>Highlights</h2>
+    <h2>Unfiltered Intel</h2>
   </header>
   <ul class="grid" role="list">
-    {featuredVideos.map((v) => (
+    {mostViewedVideos.map((v) => (
       <li class="card">
         <a class="facade" href={`https://www.youtube.com/watch?v=${v.id}`} data-yt={v.id} data-title={v.title} aria-label={`Play video: ${v.title}`}>
           <Image class="thumb" src={thumb(v.thumb)} alt="" widths={[480, 960]} sizes="(min-width: 64rem) 30vw, 90vw" />

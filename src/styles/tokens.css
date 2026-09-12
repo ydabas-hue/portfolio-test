@@ -2,18 +2,22 @@
   /* primitives: sampled from src/assets/keyframes (G3) */
   --turf-950: #0e1f17;
   --willow-300: #d9b98a;
-  --cherry-600: #b3261e;
+  --cherry-600: #821017;
   --flood-50: #f4f1e6;
   --chalk-100: #e9e4d4;
-  --amber-400: #ffb020;
+  --maroon-700: #580c10;
+  --maroon-600: #7b1116;
+  --maroon-500: #9c1c23;
+  --maroon-400: #bd2a33;
+  --maroon-light: #e04a54;
 
   /* semantic: components use only these */
   --color-bg: var(--turf-950);
   --color-surface: color-mix(in oklab, var(--turf-950) 75%, black);
   --color-text: var(--flood-50);
   --color-muted: var(--chalk-100);
-  --color-accent: var(--cherry-600); /* fills only, with --color-text on top */
-  --color-highlight: var(--amber-400); /* numbers, focus ring, one kicker per view */
+  --color-accent: var(--maroon-600); /* fills only, with --color-text on top */
+  --color-highlight: var(--maroon-400); /* numbers, focus ring, one kicker per view */
   --color-line: color-mix(in oklab, var(--flood-50) 18%, transparent);
   --wood: var(--willow-300);
 

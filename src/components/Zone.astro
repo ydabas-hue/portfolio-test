@@ -5,20 +5,33 @@ interface Props {
   id: string;
   label: string;
   still: ImageMetadata;
+  video?: string;
   eager?: boolean;
 }
-const { id, label, still, eager = false } = Astro.props;
+const { id, label, still, video, eager = false } = Astro.props;
 ---
 <section id={id} class="zone" aria-label={label} data-zone={id}>
-  <Image
-    class="zone-still"
-    src={still}
-    alt=""
-    widths={[720, 1280, 1920, 2560]}
-    sizes="100vw"
-    loading={eager ? 'eager' : 'lazy'}
-    fetchpriority={eager ? 'high' : 'auto'}
-  />
+  {video ? (
+    <video
+      class="zone-video"
+      src={video}
+      autoplay
+      muted
+      loop
+      playsinline
+      preload="auto"
+    />
+  ) : (
+    <Image
+      class="zone-still"
+      src={still}
+      alt=""
+      widths={[720, 1280, 1920, 2560]}
+      sizes="100vw"
+      loading={eager ? 'eager' : 'lazy'}
+      fetchpriority={eager ? 'high' : 'auto'}
+    />
+  )}
   <div class="zone-content"><slot /></div>
 </section>
 
@@ -29,11 +42,13 @@ const { id, label, still, eager = false } = Astro.props;
     display: grid;
   }
   .zone-still,
+  .zone-video,
   .zone-content,
   .zone::after {
     grid-area: 1 / 1;
   }
-  .zone-still {
+  .zone-still,
+  .zone-video {
     width: 100%;
     height: 100%;
     object-fit: cover;

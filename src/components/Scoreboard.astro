@@ -57,44 +57,75 @@ const s = scoreboardStats(social);
 
 <style>
   .board {
-    display: grid;
-    gap: var(--space-m);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: var(--space-s);
+    max-width: 100%;
+  }
+  @media (max-width: 48rem) {
+    .board {
+      min-height: calc(100dvh - var(--space-2xl));
+      justify-content: center;
+      gap: var(--space-xs);
+    }
   }
   .tiles {
     margin: 0;
     display: grid;
     gap: 1px;
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 12rem), 1fr));
     background: var(--color-line);
     border: 1px solid var(--color-line);
   }
+  @media (max-width: 48rem) {
+    .tiles {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
   .tile {
     display: grid;
-    gap: var(--space-xs);
+    gap: var(--space-2xs);
     align-content: start;
-    padding: var(--space-m);
-    background: color-mix(in oklab, var(--color-surface) 88%, transparent);
+    padding: var(--space-s) var(--space-m);
+    background: color-mix(in oklab, var(--color-surface) 90%, transparent);
   }
-  @media (min-width: 40rem) {
+  @media (max-width: 48rem) {
+    .tile {
+      padding: var(--space-xs) var(--space-s);
+    }
+  }
+  @media (min-width: 48rem) {
     .big {
       grid-column: span 2;
     }
   }
   dt {
     font-size: var(--step--1);
-    letter-spacing: 0.12em;
+    letter-spacing: 0.1em;
     text-transform: uppercase;
     color: var(--color-muted);
+  }
+  @media (max-width: 48rem) {
+    dt {
+      font-size: 0.72rem;
+      letter-spacing: 0.05em;
+    }
   }
   dd {
     margin: 0;
     font-family: var(--font-display);
-    font-size: var(--step-4);
+    font-size: var(--step-3);
     font-weight: 800;
-    line-height: 1;
+    line-height: 1.05;
     font-variant-numeric: tabular-nums;
     color: var(--color-highlight);
-    text-shadow: 0 0 24px color-mix(in oklab, var(--color-highlight) 45%, transparent);
+    text-shadow: 0 0 20px color-mix(in oklab, var(--color-highlight) 35%, transparent);
+  }
+  @media (max-width: 48rem) {
+    dd {
+      font-size: var(--step-2);
+    }
   }
   .asof {
     margin: 0;
