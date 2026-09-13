@@ -431,7 +431,7 @@ def generate_semantic_database():
                     "title_caption": v.get("title", ""),
                     "views": v.get("views") or 0,
                     "likes": v.get("likes") or 0,
-                    "upload_date": "",
+                    "upload_date": v.get("upload_date") or "",
                     "source": "YouTube Complete Archive",
                     "featured": False,
                 }
