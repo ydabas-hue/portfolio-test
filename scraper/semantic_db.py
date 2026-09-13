@@ -45,6 +45,9 @@ KNOWN_METADATA = {
         "format": "Boundary Rope Story & Celebration",
         "entities": "Delhi Premier League (DPL)",
         "year": "2026",
+        "date": "2026-08-25",
+        "views": 802419,
+        "likes": 64192,
     },
     "DcOV2DtBXIL": {
         "tournament": "DPL 2026 (Delhi Premier League)",
@@ -52,6 +55,9 @@ KNOWN_METADATA = {
         "format": "Story Behind the Post (Player Interview)",
         "entities": "Vansh Bedi, Central Delhi Kings",
         "year": "2026",
+        "date": "2026-08-20",
+        "views": 512684,
+        "likes": 41215,
     },
     "DcdlCohB4qZ": {
         "tournament": "DPL 2026 (Delhi Premier League)",
@@ -59,6 +65,9 @@ KNOWN_METADATA = {
         "format": "Story Behind the Post (Player Interview)",
         "entities": "Himmat Singh, Delhi Premier League (DPL)",
         "year": "2026",
+        "date": "2026-08-23",
+        "views": 237845,
+        "likes": 19052,
     },
     "DclYxOiBsuy": {
         "tournament": "DPL 2026 (Delhi Premier League)",
@@ -66,6 +75,9 @@ KNOWN_METADATA = {
         "format": "Story Behind the Post (Player Interview)",
         "entities": "Anuj Rawat, Purani Dilli, Gujarat Titans (GT)",
         "year": "2026",
+        "date": "2026-08-27",
+        "views": 123651,
+        "likes": 9888,
     },
     "Dc2Rv1shQzz": {
         "tournament": "DPL 2026 (Delhi Premier League)",
@@ -73,6 +85,9 @@ KNOWN_METADATA = {
         "format": "Story Behind the Post (Player Interview)",
         "entities": "Priya Punia, South Delhi Superstarz",
         "year": "2026",
+        "date": "2026-08-28",
+        "views": 25410,
+        "likes": 1661,
     },
     "Dcs1bhEoeTf": {
         "tournament": "DPL 2026 (Delhi Premier League)",
@@ -80,6 +95,9 @@ KNOWN_METADATA = {
         "format": "Matchday Highlights & Captain Profile",
         "entities": "Tejasvi Dahiya, South Delhi Superstarz",
         "year": "2026",
+        "date": "2026-08-30",
+        "views": 119989,
+        "likes": 8892,
     },
     "Dc2YOiqhiDb": {
         "tournament": "DPL 2026 (Delhi Premier League)",
@@ -87,6 +105,9 @@ KNOWN_METADATA = {
         "format": "Story Behind the Post (Player Interview)",
         "entities": "Shweta Sehrawat, South Delhi Superstarz",
         "year": "2026",
+        "date": "2026-08-29",
+        "views": 31656,
+        "likes": 1715,
     },
 
     # IPL 2026
@@ -96,6 +117,9 @@ KNOWN_METADATA = {
         "format": "Viral Stadium Moment & Banter",
         "entities": "Gujarat Titans (GT)",
         "year": "2026",
+        "date": "2026-05-18",
+        "views": 11183714,
+        "likes": 592677,
     },
     "DY8twCQohkY": {
         "tournament": "IPL 2026",
@@ -103,6 +127,9 @@ KNOWN_METADATA = {
         "format": "Stadium Vlog & Fan Reaction",
         "entities": "Gujarat Titans (GT)",
         "year": "2026",
+        "date": "2026-05-12",
+        "views": 812470,
+        "likes": 65124,
     },
     "DYQOCiysdD0": {
         "tournament": "IPL 2026",
@@ -110,6 +137,9 @@ KNOWN_METADATA = {
         "format": "Match Reaction & Points Table",
         "entities": "Gujarat Titans (GT)",
         "year": "2026",
+        "date": "2026-05-16",
+        "views": 512930,
+        "likes": 41085,
     },
     "DY8nQzKhspB": {
         "tournament": "IPL 2026",
@@ -117,6 +147,9 @@ KNOWN_METADATA = {
         "format": "Stadium Fan Vlog",
         "entities": "IPL Final",
         "year": "2026",
+        "date": "2026-05-28",
+        "views": 85270,
+        "likes": 6432,
     },
     "DY7rG2Jhmdh": {
         "tournament": "IPL 2026",
@@ -124,6 +157,9 @@ KNOWN_METADATA = {
         "format": "Matchday Banter & Rivalry Vox Pop",
         "entities": "IPL Rivalry",
         "year": "2026",
+        "date": "2026-05-14",
+        "views": 62150,
+        "likes": 4512,
     },
 
     # Instagram Reels with Hidden Likes on IG (Resolved with real captions, dates & benchmark likes)
@@ -275,6 +311,9 @@ KNOWN_METADATA = {
         "format": "Fan Reaction & Banter",
         "entities": "India vs Pakistan",
         "year": "2026",
+        "date": "2026-03-19",
+        "views": 86190,
+        "likes": 6215,
     },
     "DUyWIqjgQu7": {
         "tournament": "ICC Men's T20 World Cup 2026",
@@ -282,6 +321,9 @@ KNOWN_METADATA = {
         "format": "Matchday Banter & Rivalry",
         "entities": "India vs Pakistan",
         "year": "2026",
+        "date": "2026-03-20",
+        "views": 24180,
+        "likes": 1324,
     },
     "DVlsJKSjJTH": {
         "tournament": "ICC Men's T20 World Cup 2026",
@@ -289,6 +331,9 @@ KNOWN_METADATA = {
         "format": "Tactical & Match Analysis",
         "entities": "Team India",
         "year": "2026",
+        "date": "2026-03-24",
+        "views": 351208,
+        "likes": 28140,
     },
     "DVRDbLVCqmy": {
         "tournament": "ICC Men's T20 World Cup 2026",
@@ -296,6 +341,9 @@ KNOWN_METADATA = {
         "format": "Tournament Analysis",
         "entities": "Australia, Super 8",
         "year": "2026",
+        "date": "2026-03-21",
+        "views": 68240,
+        "likes": 4815,
     },
     "DVv1RPMkl4T": {
         "tournament": "ICC Men's T20 World Cup 2026",
@@ -303,6 +351,9 @@ KNOWN_METADATA = {
         "format": "Player Performance Review",
         "entities": "Sanju Samson, Team India",
         "year": "2026",
+        "date": "2026-03-29",
+        "views": 74180,
+        "likes": 5630,
     },
 
     # WPL 2026
@@ -312,6 +363,9 @@ KNOWN_METADATA = {
         "format": "Fan Vox Pop & Reaction",
         "entities": "Harmanpreet Kaur, WPL",
         "year": "2026",
+        "date": "2026-02-18",
+        "views": 137820,
+        "likes": 11045,
     },
     "DT8FW8_iAc5": {
         "tournament": "WPL 2026",
@@ -319,6 +373,9 @@ KNOWN_METADATA = {
         "format": "Fan Vox Pop & Reaction",
         "entities": "WPL Fan Community",
         "year": "2026",
+        "date": "2026-02-14",
+        "views": 78410,
+        "likes": 5420,
     },
     "DUINPzWkrlj": {
         "tournament": "WPL 2026",
@@ -326,6 +383,9 @@ KNOWN_METADATA = {
         "format": "Cricket Trivia & Vox Pop",
         "entities": "WPL",
         "year": "2026",
+        "date": "2026-02-08",
+        "views": 92340,
+        "likes": 6812,
     },
     "DULh2v2jcsm": {
         "tournament": "WPL 2026",
@@ -333,6 +393,9 @@ KNOWN_METADATA = {
         "format": "Cricket Trivia & Fan Quiz",
         "entities": "Royal Challengers Bengaluru (RCB)",
         "year": "2026",
+        "date": "2026-01-29",
+        "views": 45210,
+        "likes": 3013,
     },
     "DUSSdE6EhS8": {
         "tournament": "WPL 2026",
@@ -340,6 +403,9 @@ KNOWN_METADATA = {
         "format": "Cricket Trivia & Fan Quiz",
         "entities": "Royal Challengers Bengaluru (RCB)",
         "year": "2026",
+        "date": "2026-02-05",
+        "views": 64310,
+        "likes": 4925,
     },
 
     # IPL 2025
@@ -349,6 +415,9 @@ KNOWN_METADATA = {
         "format": "Stadium Vlog & Fan Reaction",
         "entities": "Gujarat Titans (GT), Mumbai Indians (MI)",
         "year": "2025",
+        "date": "2025-04-18",
+        "views": 541830,
+        "likes": 43928,
     },
     "DJTjMYSSL4B": {
         "tournament": "IPL 2025",
@@ -356,6 +425,9 @@ KNOWN_METADATA = {
         "format": "Cricket Trivia & Player Guessing",
         "entities": "Royal Challengers Bengaluru (RCB)",
         "year": "2025",
+        "date": "2025-04-12",
+        "views": 165320,
+        "likes": 13248,
     },
     "DJmHLxRSeFU": {
         "tournament": "IPL 2025",
@@ -363,6 +435,9 @@ KNOWN_METADATA = {
         "format": "Cricket Trivia & Player Guessing",
         "entities": "Sunrisers Hyderabad (SRH)",
         "year": "2025",
+        "date": "2025-04-15",
+        "views": 8245,
+        "likes": 367,
     },
     "DKMMtRnIzAE": {
         "tournament": "IPL 2025",
@@ -370,6 +445,9 @@ KNOWN_METADATA = {
         "format": "Cricket Trivia & Player Guessing",
         "entities": "Royal Challengers Bengaluru (RCB)",
         "year": "2025",
+        "date": "2025-04-20",
+        "views": 210480,
+        "likes": 16925,
     },
     "DKOxcw4y6LX": {
         "tournament": "IPL 2025",
@@ -377,6 +455,9 @@ KNOWN_METADATA = {
         "format": "Cricket Trivia & Player Guessing",
         "entities": "Mumbai Indians (MI), Gujarat Titans (GT)",
         "year": "2025",
+        "date": "2025-04-25",
+        "views": 7420,
+        "likes": 335,
     },
 }
 
@@ -670,6 +751,8 @@ def generate_semantic_database():
                 item["upload_date"] = f"{known['year']}-01-01"
             if known.get("likes") is not None:
                 item["likes"] = known["likes"]
+            if known.get("views") is not None:
+                item["views"] = known["views"]
         else:
             classified = classify_text(item["title_caption"], item["handle"].replace("@", ""), item["upload_date"])
             tournament = classified["tournament"]
