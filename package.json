@@ -10,6 +10,7 @@
     "build": "astro build",
     "preview": "astro preview",
     "test": "node --test \"src/lib/*.test.js\"",
+    "update:db": "python3 scraper/semantic_db.py",
     "verify": "node scripts/verify-pipeline.mjs"
   },
   "dependencies": {

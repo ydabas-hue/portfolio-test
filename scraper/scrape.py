@@ -242,6 +242,14 @@ def main():
     OUT_JSON.write_text(json.dumps(data, indent=2, ensure_ascii=False) + "\n")
     print(f"profiles={len(data['profiles'])} videos={len(videos)} posts={len(posts)} -> {OUT_JSON.relative_to(ROOT)}")
 
+    # Automatically refresh semantic database and export CSV + JSON
+    try:
+        import semantic_db
+        semantic_db.generate_semantic_database()
+    except Exception as err:
+        print("WARN: semantic database generation failed:", err)
+
 
 if __name__ == "__main__":
     main()
+
