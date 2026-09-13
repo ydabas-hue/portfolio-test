@@ -1,17 +1,23 @@
 """Semantic Database Generator for Abhishek Pandey's Cricket Content & Social Media.
 
+Compiles every single:
+- YouTube Video (long-form analysis, vlogs, matchday breakdowns)
+- YouTube Short (quizzes, viral moments, quick takes)
+- Instagram Reel (DPL accredited player interviews, matchday reactions, boundary rope reels)
+- Instagram Post
+
 Generates:
 1. src/data/media_database.csv
-2. public/media_database.csv (accessible via live site at /media_database.csv)
+2. public/media_database.csv (live at /media_database.csv)
 3. src/data/media_database.json
-4. public/media_database.json
+4. public/media_database.json (live at /media_database.json)
 
-Categorizes every video, short, reel, and post semantically with:
-- Tournament (DPL 2026, IPL 2026, IPL 2025, WPL 2026, T20 World Cup, etc.)
-- Accreditation Status (Accredited Field-of-Play, Independent, Partner, Studio)
-- Content Format (Story Behind the Post, Fan Vox Pop, Cricket Trivia, Match Analysis, etc.)
+Enriched with semantic attributes:
+- Tournament (DPL 2026, IPL 2026, IPL 2025, WPL 2026, ICC Men's T20 World Cup, etc.)
+- Accreditation Status (Accredited Field-of-Play, Independent Fan Coverage, Commercial Partner, Studio/Digital)
+- Content Format (Story Behind the Post, Fan Vox Pop, Trivia Quiz, Match Analysis, Vlog)
 - Featured Entities (Teams, Players, Franchises)
-- View counts, like counts, direct clickable URLs, and publish dates.
+- Real view counts, like counts, direct links, and upload dates.
 """
 import csv
 import json
@@ -21,14 +27,16 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 SOCIAL_JSON = ROOT / "src/data/social.json"
+YOUTUBE_ALL = ROOT / "src/data/youtube_all.json"
 PAVILION_ASTRO = ROOT / "src/components/Pavilion.astro"
+OVERRIDE_TXT = ROOT / "scraper/instagram_posts.txt"
 
 SRC_CSV = ROOT / "src/data/media_database.csv"
 PUB_CSV = ROOT / "public/media_database.csv"
 SRC_JSON = ROOT / "src/data/media_database.json"
 PUB_JSON = ROOT / "public/media_database.json"
 
-# Known curated metadata mappings for career innings and landmark content
+# Curated metadata dictionary for milestone content
 KNOWN_METADATA = {
     # DPL 2026 (Field-of-play accredited media)
     "DcRzXB-zlPg": {
@@ -228,69 +236,11 @@ KNOWN_METADATA = {
         "entities": "Mumbai Indians (MI), Gujarat Titans (GT)",
         "year": "2025",
     },
-
-    # YouTube Highlights
-    "DxgBGpUzZ08": {
-        "tournament": "IPL 2026",
-        "accreditation": "Independent Fan Coverage",
-        "format": "Fan Vox Pop & Banter",
-        "entities": "Gujarat Titans (GT), Mumbai Indians (MI)",
-        "year": "2026",
-    },
-    "YPeQi6-h30M": {
-        "tournament": "General Cricket Series",
-        "accreditation": "Creator Studio / Digital",
-        "format": "Cricket Trivia & Jersey Guessing",
-        "entities": "Indian Cricket Team",
-        "year": "2026",
-    },
-    "5XcoId1xQfI": {
-        "tournament": "General Cricket Series",
-        "accreditation": "Creator Studio / Digital",
-        "format": "Cricket Trivia & Player Guessing",
-        "entities": "Spin & Swing",
-        "year": "2025",
-    },
-    "ehA4CLVExQM": {
-        "tournament": "General Cricket Series",
-        "accreditation": "Creator Studio / Digital",
-        "format": "Cricket Trivia & Jersey Guessing",
-        "entities": "Indian Cricket Team",
-        "year": "2026",
-    },
-    "O0ILNSPGcsM": {
-        "tournament": "ICC Men's T20 World Cup 2026",
-        "accreditation": "Creator Studio / Digital",
-        "format": "Squad Trivia & Quiz",
-        "entities": "Team India",
-        "year": "2026",
-    },
-    "kaCk8jJC1Rk": {
-        "tournament": "IPL 2026",
-        "accreditation": "Creator Studio / Digital",
-        "format": "Squad Trivia & Quiz",
-        "entities": "Gujarat Titans (GT)",
-        "year": "2026",
-    },
-    "R0V4qcXudOk": {
-        "tournament": "General Cricket Series",
-        "accreditation": "Creator Studio / Digital",
-        "format": "Cricket Trivia & Jersey Guessing",
-        "entities": "Indian Cricket Team",
-        "year": "2026",
-    },
-    "GIJrFq2RTgE": {
-        "tournament": "IPL 2026",
-        "accreditation": "Creator Studio / Digital",
-        "format": "Squad Trivia & Quiz",
-        "entities": "Royal Challengers Bengaluru (RCB)",
-        "year": "2026",
-    },
 }
 
 
 def classify_text(text, channel_or_account, published_at=""):
-    """Heuristic rule classifier for unmapped or newly scraped content."""
+    """Heuristic rule classifier for unmapped content."""
     text_lower = (text or "").lower()
     year = ""
     if published_at:
@@ -302,29 +252,31 @@ def classify_text(text, channel_or_account, published_at=""):
         year = "2026"
 
     # 1. Determine Tournament
-    if "dpl" in text_lower or "delhi premier league" in text_lower or "purani dilli" in text_lower or "southdelhisuperstarz" in text_lower:
+    if any(k in text_lower for k in ["dpl", "delhi premier league", "purani dilli", "southdelhisuperstarz", "central delhi", "outer delhi"]):
         tournament = f"DPL {year or '2026'} (Delhi Premier League)"
-    elif "wpl" in text_lower or "women" in text_lower or "harmanpreet" in text_lower:
+    elif any(k in text_lower for k in ["wpl", "women", "harmanpreet"]):
         tournament = f"WPL {year or '2026'}"
-    elif "t20 world cup" in text_lower or "world cup" in text_lower or "india vs pak" in text_lower:
+    elif any(k in text_lower for k in ["t20 world cup", "world cup", "super 8", "ind vs pak", "india vs pak"]):
         tournament = f"ICC Men's T20 World Cup {year or '2026'}"
     elif any(team in text_lower for team in ["ipl", "gt", "rcb", "csk", "mi", "srh", "kkr", "rajasthan royals", "gujarat titans", "mumbai indians"]):
         tournament = f"IPL {year or '2026'}"
-    elif channel_or_account == "abhishekunseen26" or "vlog" in text_lower or "scooty" in text_lower or "gaming zone" in text_lower:
-        tournament = "N/A (Personal / Creator Journey)"
-    elif "guess the" in text_lower or "trivia" in text_lower or "jersey" in text_lower:
+    elif any(k in text_lower for k in ["ind vs afg", "ind vs aus", "ind vs eng", "ind vs ban"]):
+        tournament = "International Cricket Bilateral"
+    elif channel_or_account in ["abhishekunseen26", "abhishekunseen"] or any(k in text_lower for k in ["vlog", "scooty", "gaming zone", "rakshabandhan", "earn from youtube"]):
+        tournament = "Creator Journey & Vlogs (Abhishek Unseen)"
+    elif any(k in text_lower for k in ["guess the", "trivia", "jersey", "player", "squad"]):
         tournament = "General Cricket Trivia Series"
     else:
         tournament = "Cricket Coverage & Commentary"
 
     # 2. Determine Accreditation Status
-    if "dpl" in text_lower and ("episode" in text_lower or "story behind" in text_lower or "celebration" in text_lower or "captain" in text_lower):
+    if "dpl" in text_lower and any(k in text_lower for k in ["episode", "story behind", "celebration", "captain", "mayak yadav", "anuj", "vansh", "priya", "shweta"]):
         accreditation = "Accredited (DPL Field-of-Play Media Pass)"
     elif "my11circle" in text_lower:
         accreditation = "Commercial Partner (My11Circle)"
-    elif channel_or_account == "abhishekunseen26":
+    elif channel_or_account in ["abhishekunseen26", "abhishekunseen"]:
         accreditation = "Creator Studio / Personal"
-    elif "guess the" in text_lower or "jersey" in text_lower or "trivia" in text_lower:
+    elif any(k in text_lower for k in ["guess the", "jersey", "trivia", "squad"]):
         accreditation = "Creator Studio / Digital Production"
     else:
         accreditation = "Independent Fan Coverage"
@@ -332,17 +284,17 @@ def classify_text(text, channel_or_account, published_at=""):
     # 3. Determine Format
     if "story behind the post" in text_lower or ("episode" in text_lower and "ft" in text_lower):
         fmt = "Story Behind the Post (Player Interview)"
-    elif "vox pop" in text_lower or "fan" in text_lower or "reaction" in text_lower:
+    elif any(k in text_lower for k in ["vox pop", "fan", "reaction"]):
         fmt = "Fan Vox Pop & Stadium Reaction"
     elif "guess the player" in text_lower:
         fmt = "Cricket Trivia & Player Guessing"
-    elif "guess the jersey" in text_lower or "jersey number" in text_lower:
+    elif any(k in text_lower for k in ["guess the jersey", "jersey number"]):
         fmt = "Cricket Trivia & Jersey Guessing"
-    elif "guess the squad" in text_lower or "squad" in text_lower:
+    elif any(k in text_lower for k in ["guess the squad", "squad"]):
         fmt = "Cricket Trivia & Squad Quiz"
     elif "vlog" in text_lower:
         fmt = "Behind The Scenes / Vlog"
-    elif "analysis" in text_lower or "breakdown" in text_lower:
+    elif any(k in text_lower for k in ["analysis", "breakdown", "match"]):
         fmt = "Match Analysis & Tactics"
     else:
         fmt = "Short-form Cricket Content"
@@ -356,6 +308,8 @@ def classify_text(text, channel_or_account, published_at=""):
         "mumbai indians": "Mumbai Indians (MI)",
         "rcb": "Royal Challengers Bengaluru (RCB)",
         "srh": "Sunrisers Hyderabad (SRH)",
+        "csk": "Chennai Super Kings (CSK)",
+        "kkr": "Kolkata Knight Riders (KKR)",
         "anuj rawat": "Anuj Rawat",
         "anujrawat": "Anuj Rawat",
         "vansh bedi": "Vansh Bedi",
@@ -376,12 +330,13 @@ def classify_text(text, channel_or_account, published_at=""):
         "puranidilli": "Purani Dilli",
         "central delhi": "Central Delhi Kings",
         "centraldelhikings": "Central Delhi Kings",
+        "outer delhi": "Outer Delhi",
     }
     for k, v in entity_map.items():
         if k in text_lower and v not in entities:
             entities.append(v)
     if not entities:
-        entities_str = "Spin & Swing" if channel_or_account == "spinandswing26" else "Abhishek Unseen"
+        entities_str = "Spin & Swing" if "spin" in channel_or_account else "Abhishek Unseen"
     else:
         entities_str = ", ".join(entities)
 
@@ -417,7 +372,7 @@ def parse_pavilion_reels():
                 "handle": "@abhishekpandey_26",
                 "content_type": "Reel",
                 "id": rid,
-                "url": rurl.split("?")[0],  # clean canonical URL
+                "url": rurl.split("?")[0],
                 "title_caption": rcap,
                 "views": int(rviews),
                 "likes": int(rlikes),
@@ -428,95 +383,137 @@ def parse_pavilion_reels():
     return items
 
 
+def fetch_live_instagram_reels():
+    """Scrape latest reels directly from Instagram profiles using Scrapling."""
+    reels_out = []
+    try:
+        from scrapling.fetchers import Fetcher
+        import parse
+        for handle in ["abhishekpandey_26", "spinandswing26"]:
+            url = f"https://www.instagram.com/{handle}/reels/"
+            page = Fetcher.get(url, impersonate="chrome", stealthy_headers=True, timeout=30)
+            items = parse.parse_instagram_reels_tab(page.body.decode("utf-8", "ignore"))
+            for r in items:
+                reels_out.append({
+                    "platform": "Instagram",
+                    "handle": f"@{handle}",
+                    "content_type": "Reel",
+                    "id": r["id"],
+                    "url": f"https://www.instagram.com/reel/{r['id']}/",
+                    "title_caption": f"Reel ({r['id']})",
+                    "views": r["views"],
+                    "likes": r["likes"],
+                    "upload_date": "2026",
+                    "source": "Instagram Scrape",
+                    "featured": False,
+                })
+    except Exception as e:
+        print("INFO: Live Instagram reel fetch bypassed or failed:", e)
+    return reels_out
+
+
 def generate_semantic_database():
-    """Build the consolidated semantic database and export to CSV + JSON."""
-    social = {}
+    """Build the complete, unconstrained semantic database containing all content."""
+    items_by_id = {}
+
+    # 1. Ingest ALL YouTube videos & shorts from youtube_all.json (913 items)
+    if YOUTUBE_ALL.exists():
+        try:
+            yt_all = json.loads(YOUTUBE_ALL.read_text(encoding="utf-8"))
+            for v in yt_all:
+                vid = v["id"]
+                items_by_id[vid] = {
+                    "platform": "YouTube",
+                    "handle": f"@{v.get('channel', 'spinandswing26')}",
+                    "content_type": v.get("contentType", "Video"),
+                    "id": vid,
+                    "url": v.get("url") or f"https://www.youtube.com/watch?v={vid}",
+                    "title_caption": v.get("title", ""),
+                    "views": v.get("views") or 0,
+                    "likes": v.get("likes") or 0,
+                    "upload_date": "",
+                    "source": "YouTube Complete Archive",
+                    "featured": False,
+                }
+        except Exception as e:
+            print("WARN: could not load youtube_all.json:", e)
+
+    # 2. Update with social.json data (keeps featured status & exact views)
     if SOCIAL_JSON.exists():
         try:
             social = json.loads(SOCIAL_JSON.read_text(encoding="utf-8"))
+            for v in social.get("videos", []):
+                vid = v["id"]
+                if vid in items_by_id:
+                    if v.get("views"):
+                        items_by_id[vid]["views"] = v["views"]
+                    if v.get("publishedAt"):
+                        items_by_id[vid]["upload_date"] = v["publishedAt"][:10]
+                    items_by_id[vid]["featured"] = v.get("featured", False)
+                else:
+                    items_by_id[vid] = {
+                        "platform": "YouTube",
+                        "handle": f"@{v.get('channel', 'spinandswing26')}",
+                        "content_type": "Short" if "#short" in v.get("title", "").lower() else "Video",
+                        "id": vid,
+                        "url": f"https://www.youtube.com/watch?v={vid}",
+                        "title_caption": v.get("title", ""),
+                        "views": v.get("views") or 0,
+                        "likes": 0,
+                        "upload_date": (v.get("publishedAt") or "")[:10],
+                        "source": "social.json",
+                        "featured": v.get("featured", False),
+                    }
+            for p in social.get("posts", []):
+                sid = p.get("shortcode")
+                caption = " ".join((p.get("caption") or "").splitlines()).strip()
+                caption = re.sub(r"\s+", " ", caption)[:180]
+                items_by_id[sid] = {
+                    "platform": "Instagram",
+                    "handle": f"@{p.get('account', 'abhishekpandey_26')}",
+                    "content_type": "Reel" if p.get("isReel", True) else "Post",
+                    "id": sid,
+                    "url": (p.get("url") or f"https://www.instagram.com/reel/{sid}/").split("?")[0],
+                    "title_caption": caption or f"Instagram Post {sid}",
+                    "views": p.get("views") or 0,
+                    "likes": p.get("likes") or 0,
+                    "upload_date": "2026",
+                    "source": "social.json",
+                    "featured": p.get("featured", False),
+                }
         except Exception as e:
             print("WARN: could not read social.json:", e)
 
-    items_by_id = {}
-
-    # 1. Process YouTube videos & shorts from social.json
-    for v in social.get("videos", []):
-        vid = v["id"]
-        channel = v.get("channel", "spinandswing26")
-        title = v.get("title", "")
-        pub_at = v.get("publishedAt", "")
-        views = v.get("views", 0)
-        likes = v.get("likes", None)
-        featured = v.get("featured", False)
-        url = f"https://www.youtube.com/watch?v={vid}"
-
-        # Classify as Short or Long Video
-        # In YouTube channels, shorts have titles with #shorts or are under shorts shelf
-        is_short = "#short" in title.lower() or views > 500000 or channel == "abhishekunseen26" and views < 1000
-        content_type = "Short" if is_short else "Video"
-
-        items_by_id[vid] = {
-            "platform": "YouTube",
-            "handle": f"@{channel}",
-            "content_type": content_type,
-            "id": vid,
-            "url": url,
-            "title_caption": title,
-            "views": views or 0,
-            "likes": likes or 0,
-            "upload_date": pub_at[:10] if pub_at else "",
-            "source": "YouTube Scrape",
-            "featured": featured,
-        }
-
-    # 2. Process Instagram posts & reels from social.json
-    for p in social.get("posts", []):
-        sid = p.get("shortcode")
-        account = p.get("account", "abhishekpandey_26")
-        caption = p.get("caption", "").strip()
-        views = p.get("views", 0)
-        likes = p.get("likes", 0)
-        featured = p.get("featured", False)
-        is_reel = p.get("isReel", True)
-        url = p.get("url") or f"https://www.instagram.com/reel/{sid}/"
-
-        # clean caption
-        clean_cap = " ".join(caption.splitlines()).strip()
-        clean_cap = re.sub(r"\s+", " ", clean_cap)
-
-        items_by_id[sid] = {
-            "platform": "Instagram",
-            "handle": f"@{account}",
-            "content_type": "Reel" if is_reel else "Post",
-            "id": sid,
-            "url": url.split("?")[0],
-            "title_caption": clean_cap[:180],
-            "views": views or 0,
-            "likes": likes or 0,
-            "upload_date": "",
-            "source": "Instagram Scrape",
-            "featured": featured,
-        }
-
-    # 3. Process Curated Pavilion Innings Timeline Reels
+    # 3. Ingest Curated Pavilion Innings Timeline Reels
     for r in parse_pavilion_reels():
         rid = r["id"]
         if rid in items_by_id:
-            # Update views/likes if curated has more complete info, or preserve latest scrape
             if not items_by_id[rid]["views"] and r["views"]:
                 items_by_id[rid]["views"] = r["views"]
             if not items_by_id[rid]["likes"] and r["likes"]:
                 items_by_id[rid]["likes"] = r["likes"]
+            if r["title_caption"] and (not items_by_id[rid]["title_caption"] or items_by_id[rid]["title_caption"].startswith("Reel (")):
+                items_by_id[rid]["title_caption"] = r["title_caption"]
             items_by_id[rid]["featured"] = True
             if not items_by_id[rid]["upload_date"]:
                 items_by_id[rid]["upload_date"] = r["upload_date"]
         else:
             items_by_id[rid] = r
 
-    # 4. Enrich every item with Semantic Analysis
+    # 4. Ingest Live Scraped Instagram Reels
+    for r in fetch_live_instagram_reels():
+        rid = r["id"]
+        if rid in items_by_id:
+            if r["views"]:
+                items_by_id[rid]["views"] = r["views"]
+            if r["likes"]:
+                items_by_id[rid]["likes"] = r["likes"]
+        else:
+            items_by_id[rid] = r
+
+    # 5. Enrich with Semantic Analysis
     records = []
     for item_id, item in items_by_id.items():
-        # Check known dictionary first
         known = KNOWN_METADATA.get(item_id)
         if known:
             tournament = known["tournament"]
@@ -546,13 +543,13 @@ def generate_semantic_database():
             "Accreditation_Status": accreditation,
             "Content_Format": fmt,
             "Featured_Entities": entities,
-            "Featured_On_Portfolio": "Yes" if item["featured"] else "No",
+            "Featured_On_Portfolio": "Yes" if item.get("featured") else "No",
         })
 
     # Sort descending by views
     records.sort(key=lambda x: int(x["Views"] or 0), reverse=True)
 
-    # 5. Write CSV to src/data/media_database.csv and public/media_database.csv
+    # 6. Write CSV files
     fieldnames = [
         "Platform",
         "Handle",
@@ -578,28 +575,35 @@ def generate_semantic_database():
             for r in records:
                 writer.writerow(r)
 
-    # 6. Write JSON metadata companion
+    # 7. Write JSON files
     summary = {
         "updatedAt": datetime.now(timezone.utc).isoformat(timespec="seconds"),
         "totalItems": len(records),
         "totalViews": sum(int(r["Views"] or 0) for r in records),
         "totalLikes": sum(int(r["Likes"] or 0) for r in records),
-        "platforms": list({r["Platform"] for r in records}),
-        "handles": list({r["Handle"] for r in records}),
-        "tournaments": list({r["Tournament"] for r in records}),
-        "accreditations": list({r["Accreditation_Status"] for r in records}),
+        "platformCounts": {
+            "YouTube": len([r for r in records if r["Platform"] == "YouTube"]),
+            "Instagram": len([r for r in records if r["Platform"] == "Instagram"]),
+        },
+        "typeCounts": {
+            "Shorts": len([r for r in records if r["Content_Type"] == "Short"]),
+            "Videos": len([r for r in records if r["Content_Type"] == "Video"]),
+            "Reels": len([r for r in records if r["Content_Type"] == "Reel"]),
+            "Posts": len([r for r in records if r["Content_Type"] == "Post"]),
+        },
         "items": records,
     }
     for json_path in [SRC_JSON, PUB_JSON]:
         json_path.parent.mkdir(parents=True, exist_ok=True)
         json_path.write_text(json.dumps(summary, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
 
-    print(f"✅ Generated Media Database:")
-    print(f"   - CSV:  {SRC_CSV.relative_to(ROOT)} & {PUB_CSV.relative_to(ROOT)}")
-    print(f"   - JSON: {SRC_JSON.relative_to(ROOT)} & {PUB_JSON.relative_to(ROOT)}")
-    print(f"   - Total records: {len(records)}")
+    print(f"✅ Complete Semantic Database Generated:")
+    print(f"   - Total records: {len(records)} (All Videos, Shorts & Reels)")
     print(f"   - Total tracked views: {summary['totalViews']:,}")
     print(f"   - Total tracked likes: {summary['totalLikes']:,}")
+    print(f"   - YouTube items: {summary['platformCounts']['YouTube']} ({summary['typeCounts']['Shorts']} shorts, {summary['typeCounts']['Videos']} videos)")
+    print(f"   - Instagram items: {summary['platformCounts']['Instagram']} ({summary['typeCounts']['Reels']} reels, {summary['typeCounts']['Posts']} posts)")
+    print(f"   - Files saved: {PUB_CSV} & {SRC_CSV}")
     return records
 
 
